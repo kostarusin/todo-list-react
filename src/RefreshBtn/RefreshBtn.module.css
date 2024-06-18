@@ -1,11 +1,4 @@
-.SattingsWrap {
-  display: flex;
-  width: 144px;
-  /* height: 48px; */
-  justify-content: space-between;
-}
-
-.ItemsWrap {
+.Button {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -15,7 +8,7 @@
   cursor: pointer;
 }
 
-.ItemsWrap:hover {
+.Button:hover {
   background-color: lightgray;
   .Icon {
     color: black;
