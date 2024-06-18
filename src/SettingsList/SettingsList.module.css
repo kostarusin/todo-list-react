@@ -1,0 +1,11 @@
+.SattingsWrap {
+  display: flex;
+  width: 144px;
+  /* height: 48px; */
+  justify-content: space-between;
+}
+
+.ItemsWrap {
+  display: flex;
+  align-items: center;
+}
