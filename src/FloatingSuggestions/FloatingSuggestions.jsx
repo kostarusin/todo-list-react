@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import {
   useFloating,
   useHover,
@@ -7,16 +7,27 @@ import {
   useInteractions,
 } from "@floating-ui/react";
 import { IconContext } from "react-icons";
-import { IoSettingsOutline } from "react-icons/io5";
 
-import style from "./SettingsBtn.module.css";
+import style from "./FloatingSuggestions.module.css";
 
-const SettingsBtn = () => {
+const FloatindSuggestions = ({ icon: Icon, content }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const timeoutRef = useRef(null);
 
   const { refs, floatingStyles, context } = useFloating({
     open: isOpen,
-    onOpenChange: setIsOpen,
+    onOpenChange: (open) => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+      if (open) {
+        timeoutRef.current = setTimeout(() => {
+          setIsOpen(true);
+        }, 300);
+      } else {
+        setIsOpen(false);
+      }
+    },
   });
 
   const hover = useHover(context);
@@ -26,6 +37,15 @@ const SettingsBtn = () => {
     hover,
     focus,
   ]);
+
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, []);
+
   return (
     <div>
       <div
@@ -35,20 +55,21 @@ const SettingsBtn = () => {
         className={style.Button}
       >
         <IconContext.Provider value={{ className: style.Icon, size: 24 }}>
-          <IoSettingsOutline />
+          <Icon />
         </IconContext.Provider>
       </div>
       {isOpen && (
         <div
+          className={style.FloatingEl}
           ref={refs.setFloating}
           style={floatingStyles}
           {...getFloatingProps()}
         >
-          Settings
+          {content}
         </div>
       )}
     </div>
   );
 };
 
-export default SettingsBtn;
+export default FloatindSuggestions;
